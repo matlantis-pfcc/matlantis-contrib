@@ -54,3 +54,5 @@ git commit --signoff -m "add a_great_example"
 git commit -s -m "add a_great_example"
 ```
 commit時には`--signoff`または`-s`のオプションを付与するのを忘れないようにしてください.
+### Pull Requestを出す前に
+[exampleの形式](#exampleの形式)の内容に沿っているか確認してください. 
