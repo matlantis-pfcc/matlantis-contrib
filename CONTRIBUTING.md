@@ -32,7 +32,7 @@ branch名は追加するexampleの名前と同様にしてください. 例え�
 git checkout -b a_great_example
 ```
 ### ディレクトリ構成
-1つのexampleが`matlantis_contrib_examples`の1つのディレクトリに対応するようにします. `a_great_example`というexampleを追加する際には次のような構造になるようにします.
+1つのexampleが`matlantis_contrib_examples`内の1つのディレクトリに対応するようにします. `a_great_example`というexampleを追加する際には次のような構造になるようにします.
 ```
 matlantis_contrib_examples
 └── a_great_example(directory)
@@ -55,4 +55,4 @@ git commit -s -m "add a_great_example"
 ```
 commit時には`--signoff`または`-s`のオプションを付与するのを忘れないようにしてください.
 ### Pull Requestを出す前に
-[exampleの形式](#exampleの形式)の内容に沿っているか確認してください. 
+[exampleの形式](#exampleの形式)の内容に沿っているか確認してください.
