@@ -1,6 +1,6 @@
 # Matlantis Contrib
 
-このリポジトリは[Matlantis](https://matlantis.com/ja/)を使う際に役に立つ便利なexampleを募集するcontribです. Matlantisのユーザーが作成した例を持ち寄ることで, より快適にMatlantisが利用可能となることを目指しています.
+このリポジトリは[Matlantis](https://matlantis.com/ja/)を使う際に役に立つ便利なexampleを募集するcontribです. Matlantisのユーザーが作成したexampleを持ち寄ることで, より快適にMatlantisが利用可能となることを目指しています.
 
 ## Contributing
 このcontribへexmapleを追加したい場合は[contributingガイドライン](https://github.pfidev.jp/Matlantis/matlantis-contrib/blob/master/CONTRIBUTING.md)に従ってPull Requestを作成してください.
