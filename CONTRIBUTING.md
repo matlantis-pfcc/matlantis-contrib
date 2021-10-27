@@ -16,7 +16,7 @@
 exampleを追加するPull Requestを出す際には以下の内容が満たされているかに注意してください. また, Reviewerは主にこれらの内容が守られているかどうかを中心にReviewを行います.
 - DCO署名がなされていること. DCO署名がなされているかどうかは[CI](https://github.com/probot/dco#how-it-works)(Continuous Integration)でチェックされます.
 - 実行してエラーが出ないこと. Matlantis環境でnotebookのcellを上から順に実行していき, エラーが起きないようにしてください.
-- コピーライト表記を含むこと. notebookの一番上にMarkdown形式で```Copyright xxx as contributors to Matlantis contrib project```という表記を追加してください. xxxにはプログラムの作成者の名前を入力します. [hello_world](https://github.pfidev.jp/Matlantis/matlantis-contrib/blob/master/matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
+- コピーライト表記を含むこと. notebookの一番上にMarkdown形式で```Copyright xxx as contributors to Matlantis contrib project```という表記を追加してください. xxxにはプログラムの作成者の名前を入力します. [hello_world](matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
 - 機密情報や認証情報(APIキーやパスワード)が含まれないこと.
 
 ## ガイドライン
@@ -43,7 +43,7 @@ matlantis_contrib_examples
     └── output(directory)
         └── piyo.xyz
 ```
-`a_great_example.ipynb`が入/出力ファイルを持つ場合はinput/outputディレクトリに配置してください. 入/出力ファイルが無い場合にはinput/outputディレクトリの作成は省略してください. `a_great_example.ipynb`実行時に正しくinput/outputでファイルが入/出力されるように, notebook内では相対pathを用いるようにしてください. 具体的には[hello_world](https://github.pfidev.jp/Matlantis/matlantis-contrib/blob/master/matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
+`a_great_example.ipynb`が入/出力ファイルを持つ場合はinput/outputディレクトリに配置してください. 入/出力ファイルが無い場合にはinput/outputディレクトリの作成は省略してください. `a_great_example.ipynb`実行時に正しくinput/outputでファイルが入/出力されるように, notebook内では相対pathを用いるようにしてください. 具体的には[hello_world](matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
 ### DCO署名
 `git commit`を行う際にはDCO署名をすることが必要になります. DCO署名は以下のように行うことができます.
 ```

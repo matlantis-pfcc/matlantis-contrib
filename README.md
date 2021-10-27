@@ -26,6 +26,6 @@ matlantis_contrib_examples
     └── output(directory)
         └── piyo.xyz
 ```
-- `a_great_example`というexampleを実行するには`a_great_example`というディレクトリをMatlantisにアップロードし, `a_great_example.ipynb`を実行します.
+- `a_great_example`というexampleを実行するには`a_great_example`というディレクトリをzipファイルに圧縮してMatlantisにアップロードし, `a_great_example.ipynb`を実行します.
 - exampleに入力ファイルが必要な場合は`a_great_example/input`に入力ファイルを置いてください.
 - exampleが実行結果をファイルを出力する場合は `a_great_example/output`に結果が出力されます.
