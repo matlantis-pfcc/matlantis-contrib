@@ -8,6 +8,7 @@
 
 ## contributeする前に
 - このリポジトリのプログラムは[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)ライセンスの下で管理されます. このプロジェクトに参加するには[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)の内容を確認し, これに同意して頂くことが必要となります.
+- exampleの著作権はその著者が保持しますが, プロジェクト全体でのcopyrightは, `Copyright 2021 Matlantis contributors` のように表記させていただきます.
 - [DCO](https://github.com/probot/dco#how-it-works)への署名が必要となります. `git commit`を行うときに`--signoff`または`-s`オプションを付与することでDCO署名を行うことが可能です.
 - contribに追加されたexmapleの中で特に汎用性が高いものは[Matlantis](https://matlantis.com/ja/)のexampleやチュートリアルに追加されることがあります.
 - contrib内のexmapleにバグなどがあることに気づいた場合は直接Pull Requestを送るのではなく, このリポジトリの[Issues](https://github.pfidev.jp/Matlantis/matlantis-contrib/issues)にissueを立てて頂くようお願いします.
