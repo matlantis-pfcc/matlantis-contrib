@@ -16,7 +16,7 @@
 exampleを追加するPull Requestを出す際には以下の内容が満たされているかに注意してください. また, Reviewerは主にこれらの内容が守られているかどうかを中心にReviewを行います.
 - DCO署名がなされていること. DCO署名がなされているかどうかは[CI](https://github.com/probot/dco#how-it-works)(Continuous Integration)でチェックされます.
 - 実行してエラーが出ないこと. Matlantis環境でnotebookのcellを上から順に実行していき, エラーが起きないようにしてください.
-- コピーライト表記を含むこと. exampleの作成者は, そのプログラムの著作権を保持します. プログラムの作成者が著作権を持っていることを明示するためにnotebookの一番上にMarkdown形式で```Copyright xxx as contributors to Matlantis contrib project```という表記を追加してください. xxxにはプログラムの作成者の名前を入力します. [hello_world](matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
+- コピーライト表記を含むこと. プログラムの作成者が著作権を持っていることを明示するためにnotebookの一番上にMarkdown形式で```Copyright <YOUR NAME> as contributors to Matlantis contrib project```という表記を追加してください. <YOUR NAME> にはプログラムの作成者の名前を入力します. [hello_world](matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
 - 機密情報や認証情報(APIキーやパスワード)が含まれないこと.
 
 ## ガイドライン
