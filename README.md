@@ -29,3 +29,9 @@ matlantis_contrib_examples
 - `a_great_example`というexampleを実行するには`a_great_example`というディレクトリをzipファイルに圧縮してMatlantisにアップロードし, ファイルツリーのペインで右クリックから`Extract Archive`で解凍し、`a_great_example.ipynb`を実行します.
 - exampleに入力ファイルが必要な場合は`a_great_example/input`に入力ファイルを置いてください.
 - exampleが実行結果をファイルを出力する場合は `a_great_example/output`に結果が出力されます.
+
+
+## 注意事項
+
+* このcontribで提供するexampleの動作保証はいたしません。Matlantisの更新にともない動作しなくなる可能性があります。
+* 今後、このcontribの内容を予告なく修正・削除することがあります。
