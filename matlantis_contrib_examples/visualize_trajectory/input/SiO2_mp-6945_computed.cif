@@ -1,5 +1,5 @@
 # generated using pymatgen
-# A. Jain*, S.P. Ong*, G. Hautier, W. Chen, W.D. Richards, S. Dacek, S. Cholia, D. Gunter, D. Skinner, G. Ceder, K.A. Persson (*=equal contributions)
+# A. Jain*, S.P. Ong*, G. Hautier, W. Chen, W.D. Richards, S. Dacek, S. Cholia, D. Gunter, D. Skinner, G. Ceder, K.A. Persson (*=equal contributions)\n
 # The Materials Project: A materials genome approach to accelerating materials innovation
 # APL Materials, 2013, 1(1), 011002.
 # Licensed under CC BY 4.0
