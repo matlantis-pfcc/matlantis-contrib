@@ -8,14 +8,14 @@
 
 ## contributeする前に
 - このリポジトリのプログラムは[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)ライセンスの下で管理されます. このプロジェクトに参加するには[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)の内容を確認し, これに同意して頂くことが必要となります.
-- exampleの著作権はその著者が保持しますが, プロジェクト全体でのcopyrightは, `Copyright 2021 Matlantis contributors` のように表記させていただきます.
+- exampleの著作権はその著者が保持しますが, プロジェクト全体でのcopyrightは, `Copyright 2023 Matlantis contributors` のように表記させていただきます.
 - [DCO](https://github.com/probot/dco#how-it-works)への署名が必要となります. `git commit`を行うときに`--signoff`または`-s`オプションを付与することでDCO署名を行うことが可能です.
 - contribに追加されたexmapleの中で特に汎用性が高いものは[Matlantis](https://matlantis.com/ja/)のexampleやチュートリアルに追加されることがあります.
 - contrib内のexmapleにバグなどがあることに気づいた場合は直接Pull Requestを送るのではなく, このリポジトリの[Issues](https://github.pfidev.jp/Matlantis/matlantis-contrib/issues)にissueを立てて頂くようお願いします.
 
 ## exampleの形式
 exampleを追加するPull Requestを出す際には以下の内容が満たされているかに注意してください. また, Reviewerは主にこれらの内容が守られているかどうかを中心にReviewを行います.
-- DCO署名がなされていること. DCO署名がなされているかどうかは[CI](https://github.com/probot/dco#how-it-works)(Continuous Integration)でチェックされます.
+- DCO署名がなされていること.
 - 実行してエラーが出ないこと. Matlantis環境でnotebookのcellを上から順に実行していき, エラーが起きないようにしてください.
 - コピーライト表記を含むこと. プログラムの作成者が著作権を持っていることを明示するためにnotebookの一番上にMarkdown形式で```Copyright <YOUR NAME> as contributors to Matlantis contrib project```という表記を追加してください. `<YOUR NAME>` にはプログラムの作成者の名前を入力します. [hello_world](matlantis_contrib_examples/hello_world/hello_world.ipynb)の内容を参考にしてください.
 - 機密情報や認証情報(APIキーやパスワード)が含まれないこと.
