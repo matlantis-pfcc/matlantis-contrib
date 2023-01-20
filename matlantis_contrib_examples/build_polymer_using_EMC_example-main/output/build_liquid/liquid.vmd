@@ -1,0 +1,32 @@
+#!/usr/bin/env vmd -e
+
+# variables
+
+set project "liquid"
+
+# load structure
+
+mol new $project.psf waitfor all
+mol addfile $project.pdb waitfor all
+
+# set representation
+
+mol delrep 0 top
+mol representation Lines 1
+mol color Type
+mol addrep top
+mol showrep top 0 1
+
+# set atom radii
+
+set radii {1.9575 2.005 1.4975 0.549 0.549 1.515 1.804 1.7675}
+set types {"Cl" "c" "hc" "ho" "hw" "na+" "o*" "oh"}
+foreach type ${types} radius ${radii} {
+  set atoms [atomselect top "type \"${type}\""]
+  $atoms set radius ${radius}
+  $atoms delete
+}
+
+# set periodic box
+
+pbc box

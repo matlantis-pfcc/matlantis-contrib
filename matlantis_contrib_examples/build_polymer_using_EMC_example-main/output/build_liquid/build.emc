@@ -1,0 +1,287 @@
+(* EMC: Script *)
+
+(* Created by emc_setup.pl v4.1.3, April 7, 2022
+   on Thu Jan 19 13:30:08 JST 2023 *)
+
+(* define variables *)
+
+variables	= {
+  seed		-> -1,
+  ntotal	-> 400,
+  fshape	-> 1,
+  output	-> "mixture",
+  field		-> "EMC_interface/EMC/v9.4.4/field/pcff/pcff",
+  location1	-> "./",
+
+  nav		-> 0.6022141179,
+  temperature	-> 300,
+  radius	-> 5,
+  nrelax	-> 100,
+  weight_nonbond -> 0.0001,
+  weight_bond	-> 0.0001,
+  weight_focus	-> 1,
+  cutoff	-> 9.5,
+  charge_cutoff	-> 9.5,
+  kappa		-> 4,
+
+  density1	-> 0.85,
+  lprevious	-> 0,
+  lphase	-> 0,
+
+  f_water	-> 1,
+  f_alcohol	-> 1,
+  f_poly	-> 1,
+
+  chem_center	-> "*NCCCCCC(=O)*",
+  chem_left	-> "NCCCCCC(=O)*",
+  chem_right	-> "*NCCCCCC(=O)O",
+  chem_water	-> "O",
+  chem_alcohol	-> "CCO"
+};
+
+output		= {
+  debug		-> false,
+  exit		-> true,
+  info		-> true,
+  warning	-> true
+};
+
+(* define force field *)
+
+field		= {
+  id		-> pcff,
+  mode		-> cff,
+    name	-> {location1+field+".frc", location1+field+"_templates.dat"},
+  compress	-> false
+};
+
+(* define groups *)
+
+groups		= {
+  group		-> {
+    id		-> center, depth -> 6, chemistry -> chem_center,
+    connects	-> {
+      {source	-> $end1, destination -> {center, $end2}},
+      {source	-> $end1, destination -> {left, $end1}},
+      {source	-> $end2, destination -> {center, $end1}},
+      {source	-> $end2, destination -> {right, $end1}}
+    }
+  },
+  group		-> {
+    id		-> left, depth -> 6, chemistry -> chem_left,
+    connects	-> {
+      {source	-> $end1, destination -> {center, $end1}}
+    }
+  },
+  group		-> {
+    id		-> right, depth -> 6, chemistry -> chem_right,
+    connects	-> {
+      {source	-> $end1, destination -> {center, $end2}}
+    }
+  },
+  group		-> {
+    id		-> water,
+    depth	-> 6,
+    chemistry	-> chem_water
+  },
+  group		-> {
+    id		-> alcohol,
+    depth	-> 6,
+    chemistry	-> chem_alcohol
+  }
+};
+
+field		= {
+  mode		-> apply,
+  check		-> {
+    atomistic	-> true,
+    charge	-> true
+  },
+  debug		-> false,
+  error		-> false
+};
+
+(* determine simulation sizing *)
+
+variables	= {
+
+  (* lengths *)
+
+  lg_center	-> nsites(center),
+  lg_left	-> nsites(left),
+  lg_right	-> nsites(right),
+  lg_water	-> nsites(water),
+  lg_alcohol	-> nsites(alcohol),
+  l_water	-> lg_water,
+  norm_water	-> 1,
+  l_alcohol	-> lg_alcohol,
+  norm_alcohol	-> 1,
+
+  norm_poly	-> 1,
+
+  l_poly	-> (8*lg_center+lg_left+lg_right)*1/norm_poly,
+
+  (* masses *)
+
+  mg_center	-> mass(center),
+  mg_left	-> mass(left),
+  mg_right	-> mass(right),
+  mg_water	-> mass(water),
+  mg_alcohol	-> mass(alcohol),
+
+  m_water	-> mg_water,
+  norm_water	-> 1,
+  m_alcohol	-> mg_alcohol,
+  norm_alcohol	-> 1,
+
+  norm_poly	-> 1,
+
+  m_poly	-> (8*mg_center+mg_left+mg_right)*1/norm_poly,
+
+  (* mol fractions *)
+
+  f_water	-> f_water*l_water,
+  f_alcohol	-> f_alcohol*l_alcohol,
+  f_poly	-> f_poly*l_poly,
+
+  (* normalization *)
+
+  norm		-> f_water+f_alcohol+f_poly,
+
+  f_water	-> f_water/norm,
+  f_alcohol	-> f_alcohol/norm,
+  f_poly	-> f_poly/norm,
+
+  (* sizing *)
+
+  n_water	-> int(f_water*ntotal/l_water+0.5),
+  n_alcohol	-> int(f_alcohol*ntotal/l_alcohol+0.5),
+  n_poly	-> int(f_poly*ntotal/l_poly+0.5),
+
+
+  (* system sizing *)
+
+  ntotal	-> 0,
+  mtotal	-> 0
+};
+
+(* define interactions *)
+
+simulation	= {
+  units		-> {
+    permittivity -> 1,
+    seed	-> seed
+  },
+  types		-> {
+    coulomb	-> {
+      pair	-> {active -> true, cutoff -> charge_cutoff}
+    }
+  }
+};
+
+(* clusters phase 1 *)
+
+clusters	= {
+  progress	-> none,
+  cluster	-> {
+    id		-> water, system -> main, group -> water, n -> n_water},
+  cluster	-> {
+    id		-> alcohol, system -> main, group -> alcohol, n -> n_alcohol},
+  polymer	-> {
+    id		-> poly, system -> main, type -> alternate,
+    n		-> int(1*n_poly/norm_poly+0.5),
+    groups	-> {center, left, right},
+    weights	-> {1, 1, 1},
+    nrepeat	-> {8, 1, 1}
+  }
+};
+
+field		= {
+  mode		-> apply,
+  check		-> {
+    atomistic	-> true,
+    charge	-> true
+  },
+  debug		-> false,
+  error		-> false
+};
+
+(* build phase 1 *)
+
+variables	= {
+  nphase1	-> ntotal()-ntotal,
+  mphase1	-> mtotal()-mtotal,
+  vphase1	-> mphase1/nav/density1,
+  lbox		-> (vphase1/fshape)^(1/3),
+  lphase1	-> fshape*lbox,
+  lxx		-> lphase1,
+  lyy		-> lbox,
+  lzz		-> lbox,
+  lzy		-> 0,
+  lzx		-> 0,
+  lyx		-> 0,
+  lphase	-> lphase1,
+  ntotal	-> nphase1,
+  mtotal	-> mphase1,
+  vtotal	-> vphase1
+};
+
+types		= {
+  cff		-> {
+    pair	-> {active -> true, mode -> repulsive}
+  }
+};
+
+build		= {
+  system	-> {
+    id		-> main,
+    split	-> false,
+    geometry	-> {xx -> lxx, yy -> lyy, zz -> lzz,
+		    zy -> lzy, zx -> lzx, yx -> lyx},
+    temperature	-> temperature,
+    flag	-> {charge -> true, geometry -> true, map -> true, pbc -> true}
+  },
+  select	-> {
+    progress	-> list,
+    frequency	-> 1,
+    name	-> "error",
+    order	-> random,
+    cluster	-> {water, alcohol, poly},
+    relax	-> {ncycles -> nrelax, radius -> radius},
+    grow	-> {
+      method	-> energetic,
+      check	-> all,
+      nbonded	-> 20,
+      ntrials	-> 20,
+      niterations -> 1000,
+      theta	-> 0,
+      weight	-> {
+	bonded	-> weight_bond, nonbonded -> weight_nonbond,
+	focus	-> weight_focus}
+    }
+  }
+};
+
+force		= {style -> none, message -> nkt};
+force		= {style -> init, message -> nkt};
+
+(* LAMMPS profile variables *)
+
+variables	= {
+  nl_poly	-> nclusters(clusters -> poly)
+};
+
+(* storage *)
+
+put		= {name -> output, compress -> true};
+
+pdb		= {name -> output, compress -> false, extend -> false,
+		   forcefield -> cff, detect -> false, hexadecimal -> false,
+		   unwrap -> true, pbc -> true, atom -> index, residue -> index,
+		   segment -> index, rank -> false, vdw -> false, cut -> false,
+		   fixed -> true, rigid -> true, connectivity -> false,
+		   parameters -> false};
+
+lammps		= {name -> output, mode -> put, forcefield -> cff,
+		   parameters -> true, types -> false, unwrap -> true,
+		   charges -> true, ewald -> true};
