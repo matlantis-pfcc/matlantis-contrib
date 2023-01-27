@@ -1,0 +1,55 @@
+
+ITEM	OPTIONS
+
+replace		true
+#workdir		./work
+#debug		false
+field		pcff
+density		0.85
+ntotal		2000
+build_dir	./build
+build_replace	true
+pdb		true
+pdb_compress	false
+emc_execute	false
+prefix		mixture
+project		mixture
+field_error	false   # Ignore errors of force field assignment.
+#charge		false
+#emc_test	true
+#expert		true
+#depth		9
+emc_depth 6
+
+ITEM	END
+
+# Groups
+
+ITEM	GROUPS
+
+center		*NCCCCCC(=O)*,1,center:2
+left		NCCCCCC(=O)*,1,center:1
+right		*NCCCCCC(=O)O,1,center:2
+water           O
+alcohol         CCO
+
+ITEM	END
+
+# Clusters
+
+ITEM	CLUSTERS
+
+water           water,1
+alcohol         alcohol,1
+poly            alternate,1
+
+ITEM	END
+
+# Polymers
+
+ITEM	POLYMERS
+
+poly
+1		center,8,left,1,right,1
+
+ITEM	END
