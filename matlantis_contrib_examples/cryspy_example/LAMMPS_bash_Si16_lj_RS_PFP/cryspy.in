@@ -1,7 +1,7 @@
 [basic]
 algo = RS
 calc_code = LAMMPS
-tot_struc = 4
+tot_struc = 5
 nstage = 2
 njob = 2
 jobcmd = bash
