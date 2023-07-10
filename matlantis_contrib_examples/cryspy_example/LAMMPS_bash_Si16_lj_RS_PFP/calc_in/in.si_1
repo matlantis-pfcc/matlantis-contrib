@@ -16,7 +16,7 @@ mass  1 28.0855
 # If you use a potential file, you should write the file name in cryspy.in like "lammps_potential = SiO.tersoff"
 #pair_style lj/cut 3.0
 #pair_coeff  1 1 1 2.4
-pair_style pfp_api v3.0.0
+pair_style pfp_api v4.0.0
 pair_coeff * * species Si
 
 # Setup output
