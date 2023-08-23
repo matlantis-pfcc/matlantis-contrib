@@ -1,0 +1,29 @@
+
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map yes
+read_data input/mma-radical-addition.data
+
+mass 1 12.011
+mass 2 1.008
+mass 3 15.999
+
+pair_style pfp_api v4.0.0 CRYSTAL_PLUS_D3
+pair_coeff * * species C H O
+
+timestep 0.001
+
+thermo 1000
+thermo_style custom step temp etotal pe ke lx vol press density
+
+dump 1 all custom 1000 output/metadynamics.lammpstrj id type element x y z vx vy vz fx fy fz
+dump_modify 1 element C H O
+
+velocity all create 300 12345 dist gaussian mom yes
+fix f1 all nvt temp 300 300 0.1
+fix f2 all plumed plumedfile input/plumed.dat outfile output/plumed.log
+
+run 500000
+unfix f1
+unfix f2
