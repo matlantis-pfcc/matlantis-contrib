@@ -58,7 +58,7 @@ class EMCInterface(object):
 
         system_emcexe = {
             "Darwin": "emc_macos",
-            "Linux": "emc_linux64",
+            "Linux": "emc_linux_x86_64",
             "Windows": "emc_win32",
         }
         self.emc = system_emcexe[platform.system()]
