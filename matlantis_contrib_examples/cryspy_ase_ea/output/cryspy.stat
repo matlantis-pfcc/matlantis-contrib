@@ -1,0 +1,74 @@
+[basic]
+algo = EA
+calc_code = ASE
+tot_struc = 520
+nstage = 1
+njob = 10
+jobcmd = bash
+jobfile = job_cryspy
+
+[structure]
+struc_mode = crystal
+natot = 8
+atype = Ca Si
+nat = 4 4
+mol_file = None
+nmol = None
+timeout_mol = 120.0
+rot_mol = None
+nrot = None
+vol_factor = 1.1 1.1
+vol_mu = None
+vol_sigma = None
+mindist_1 = 2.5 2.0
+mindist_2 = 2.0 2.0
+mindist_factor = 1.0
+mindist_mol_bs = None
+mindist_mol_bs_factor = 1.0
+maxcnt = 50
+symprec = 0.01
+spgnum = all
+use_find_wy = False
+fwpath = None
+minlen = None
+maxlen = None
+dangle = None
+
+[EA]
+n_pop = 80
+n_crsov = 25
+n_perm = 25
+n_strain = 20
+n_rand = 10
+n_elite = 10
+fit_reverse = False
+n_fittest = 30
+slct_func = TNM
+t_size = 5
+crs_lat = equal
+nat_diff_tole = 2
+ntimes = 1
+sigma_st = 0.1
+maxcnt_ea = 50
+maxgen_ea = 5
+emax_ea = None
+emin_ea = None
+
+[ASE]
+ase_python = ase_in.py
+
+[option]
+stop_chkpt = 0
+load_struc_flag = False
+stop_next_struc = False
+recalc = 
+append_struc_ea = False
+energy_step_flag = False
+struc_step_flag = False
+force_step_flag = False
+stress_step_flag = False
+
+[status]
+generation = 5
+id_queueing = 
+

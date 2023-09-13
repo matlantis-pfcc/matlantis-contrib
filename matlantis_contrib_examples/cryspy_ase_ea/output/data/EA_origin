@@ -1,0 +1,561 @@
+Gen Struc_ID   Operation     Parent
+  1        0      random       None
+  1        1      random       None
+  1        2      random       None
+  1        3      random       None
+  1        4      random       None
+  1        5      random       None
+  1        6      random       None
+  1        7      random       None
+  1        8      random       None
+  1        9      random       None
+  1       10      random       None
+  1       11      random       None
+  1       12      random       None
+  1       13      random       None
+  1       14      random       None
+  1       15      random       None
+  1       16      random       None
+  1       17      random       None
+  1       18      random       None
+  1       19      random       None
+  1       20      random       None
+  1       21      random       None
+  1       22      random       None
+  1       23      random       None
+  1       24      random       None
+  1       25      random       None
+  1       26      random       None
+  1       27      random       None
+  1       28      random       None
+  1       29      random       None
+  1       30      random       None
+  1       31      random       None
+  1       32      random       None
+  1       33      random       None
+  1       34      random       None
+  1       35      random       None
+  1       36      random       None
+  1       37      random       None
+  1       38      random       None
+  1       39      random       None
+  1       40      random       None
+  1       41      random       None
+  1       42      random       None
+  1       43      random       None
+  1       44      random       None
+  1       45      random       None
+  1       46      random       None
+  1       47      random       None
+  1       48      random       None
+  1       49      random       None
+  1       50      random       None
+  1       51      random       None
+  1       52      random       None
+  1       53      random       None
+  1       54      random       None
+  1       55      random       None
+  1       56      random       None
+  1       57      random       None
+  1       58      random       None
+  1       59      random       None
+  1       60      random       None
+  1       61      random       None
+  1       62      random       None
+  1       63      random       None
+  1       64      random       None
+  1       65      random       None
+  1       66      random       None
+  1       67      random       None
+  1       68      random       None
+  1       69      random       None
+  1       70      random       None
+  1       71      random       None
+  1       72      random       None
+  1       73      random       None
+  1       74      random       None
+  1       75      random       None
+  1       76      random       None
+  1       77      random       None
+  1       78      random       None
+  1       79      random       None
+  1       80      random       None
+  1       81      random       None
+  1       82      random       None
+  1       83      random       None
+  1       84      random       None
+  1       85      random       None
+  1       86      random       None
+  1       87      random       None
+  1       88      random       None
+  1       89      random       None
+  1       90      random       None
+  1       91      random       None
+  1       92      random       None
+  1       93      random       None
+  1       94      random       None
+  1       95      random       None
+  1       96      random       None
+  1       97      random       None
+  1       98      random       None
+  1       99      random       None
+  1      100      random       None
+  1      101      random       None
+  1      102      random       None
+  1      103      random       None
+  1      104      random       None
+  1      105      random       None
+  1      106      random       None
+  1      107      random       None
+  1      108      random       None
+  1      109      random       None
+  1      110      random       None
+  1      111      random       None
+  1      112      random       None
+  1      113      random       None
+  1      114      random       None
+  1      115      random       None
+  1      116      random       None
+  1      117      random       None
+  1      118      random       None
+  1      119      random       None
+  1      120      random       None
+  1      121      random       None
+  1      122      random       None
+  1      123      random       None
+  1      124      random       None
+  1      125      random       None
+  1      126      random       None
+  1      127      random       None
+  1      128      random       None
+  1      129      random       None
+  1      130      random       None
+  1      131      random       None
+  1      132      random       None
+  1      133      random       None
+  1      134      random       None
+  1      135      random       None
+  1      136      random       None
+  1      137      random       None
+  1      138      random       None
+  1      139      random       None
+  1      140      random       None
+  1      141      random       None
+  1      142      random       None
+  1      143      random       None
+  1      144      random       None
+  1      145      random       None
+  1      146      random       None
+  1      147      random       None
+  1      148      random       None
+  1      149      random       None
+  1      150      random       None
+  1      151      random       None
+  1      152      random       None
+  1      153      random       None
+  1      154      random       None
+  1      155      random       None
+  1      156      random       None
+  1      157      random       None
+  1      158      random       None
+  1      159      random       None
+  1      160      random       None
+  1      161      random       None
+  1      162      random       None
+  1      163      random       None
+  1      164      random       None
+  1      165      random       None
+  1      166      random       None
+  1      167      random       None
+  1      168      random       None
+  1      169      random       None
+  1      170      random       None
+  1      171      random       None
+  1      172      random       None
+  1      173      random       None
+  1      174      random       None
+  1      175      random       None
+  1      176      random       None
+  1      177      random       None
+  1      178      random       None
+  1      179      random       None
+  1      180      random       None
+  1      181      random       None
+  1      182      random       None
+  1      183      random       None
+  1      184      random       None
+  1      185      random       None
+  1      186      random       None
+  1      187      random       None
+  1      188      random       None
+  1      189      random       None
+  1      190      random       None
+  1      191      random       None
+  1      192      random       None
+  1      193      random       None
+  1      194      random       None
+  1      195      random       None
+  1      196      random       None
+  1      197      random       None
+  1      198      random       None
+  1      199      random       None
+  2      200   crossover    (3, 85)
+  2      201   crossover   (138, 5)
+  2      202   crossover   (174, 3)
+  2      203   crossover  (107, 85)
+  2      204   crossover   (85, 47)
+  2      205   crossover   (32, 47)
+  2      206   crossover   (96, 85)
+  2      207   crossover   (32, 41)
+  2      208   crossover   (107, 3)
+  2      209   crossover  (85, 107)
+  2      210   crossover  (107, 85)
+  2      211   crossover  (107, 32)
+  2      212   crossover  (167, 32)
+  2      213   crossover  (138, 34)
+  2      214   crossover   (85, 41)
+  2      215   crossover  (32, 107)
+  2      216   crossover   (96, 41)
+  2      217   crossover   (32, 85)
+  2      218   crossover   (85, 41)
+  2      219   crossover   (96, 32)
+  2      220   crossover  (47, 107)
+  2      221   crossover   (48, 47)
+  2      222   crossover  (41, 167)
+  2      223   crossover  (96, 107)
+  2      224   crossover    (34, 5)
+  2      225 permutation     (138,)
+  2      226 permutation       (5,)
+  2      227 permutation       (5,)
+  2      228 permutation      (85,)
+  2      229 permutation      (41,)
+  2      230 permutation     (134,)
+  2      231 permutation      (47,)
+  2      232 permutation     (167,)
+  2      233 permutation       (5,)
+  2      234 permutation      (96,)
+  2      235 permutation       (5,)
+  2      236 permutation      (85,)
+  2      237 permutation     (107,)
+  2      238 permutation      (32,)
+  2      239 permutation      (85,)
+  2      240 permutation       (5,)
+  2      241 permutation      (32,)
+  2      242 permutation      (41,)
+  2      243 permutation       (3,)
+  2      244 permutation      (34,)
+  2      245 permutation       (5,)
+  2      246 permutation      (41,)
+  2      247 permutation       (3,)
+  2      248 permutation     (134,)
+  2      249 permutation       (5,)
+  2      250      strain      (32,)
+  2      251      strain     (134,)
+  2      252      strain      (85,)
+  2      253      strain      (41,)
+  2      254      strain      (85,)
+  2      255      strain       (3,)
+  2      256      strain      (96,)
+  2      257      strain     (134,)
+  2      258      strain     (134,)
+  2      259      strain     (134,)
+  2      260      strain      (41,)
+  2      261      strain       (5,)
+  2      262      strain      (41,)
+  2      263      strain      (96,)
+  2      264      strain      (85,)
+  2      265      strain      (96,)
+  2      266      strain      (47,)
+  2      267      strain      (32,)
+  2      268      strain      (48,)
+  2      269      strain      (67,)
+  2      270      random       None
+  2      271      random       None
+  2      272      random       None
+  2      273      random       None
+  2      274      random       None
+  2      275      random       None
+  2      276      random       None
+  2      277      random       None
+  2      278      random       None
+  2      279      random       None
+  2      134       elite      elite
+  2       32       elite      elite
+  2       85       elite      elite
+  2      107       elite      elite
+  2       41       elite      elite
+  2       34       elite      elite
+  2        5       elite      elite
+  2       47       elite      elite
+  2       96       elite      elite
+  2      167       elite      elite
+  3      280   crossover (214, 222)
+  3      281   crossover (252, 262)
+  3      282   crossover (214, 223)
+  3      283   crossover (204, 262)
+  3      284   crossover (266, 222)
+  3      285   crossover (203, 252)
+  3      286   crossover (222, 250)
+  3      287   crossover (266, 209)
+  3      288   crossover (252, 222)
+  3      289   crossover (222, 266)
+  3      290   crossover (214, 266)
+  3      291   crossover (222, 203)
+  3      292   crossover (214, 252)
+  3      293   crossover (201, 249)
+  3      294   crossover (203, 252)
+  3      295   crossover (266, 252)
+  3      296   crossover (203, 252)
+  3      297   crossover (214, 252)
+  3      298   crossover (222, 215)
+  3      299   crossover (222, 209)
+  3      300   crossover (252, 203)
+  3      301   crossover (215, 209)
+  3      302   crossover (217, 204)
+  3      303   crossover (203, 202)
+  3      304   crossover (252, 200)
+  3      305 permutation     (209,)
+  3      306 permutation     (134,)
+  3      307 permutation     (249,)
+  3      308 permutation     (222,)
+  3      309 permutation     (252,)
+  3      310 permutation     (252,)
+  3      311 permutation     (266,)
+  3      312 permutation     (134,)
+  3      313 permutation     (203,)
+  3      314 permutation     (266,)
+  3      315 permutation     (252,)
+  3      316 permutation     (222,)
+  3      317 permutation     (203,)
+  3      318 permutation     (249,)
+  3      319 permutation     (134,)
+  3      320 permutation     (204,)
+  3      321 permutation     (209,)
+  3      322 permutation     (249,)
+  3      323 permutation     (134,)
+  3      324 permutation     (209,)
+  3      325 permutation     (223,)
+  3      326 permutation     (222,)
+  3      327 permutation     (252,)
+  3      328 permutation     (200,)
+  3      329 permutation     (203,)
+  3      330      strain     (249,)
+  3      331      strain     (252,)
+  3      332      strain     (209,)
+  3      333      strain     (203,)
+  3      334      strain     (249,)
+  3      335      strain     (203,)
+  3      336      strain     (249,)
+  3      337      strain     (204,)
+  3      338      strain     (214,)
+  3      339      strain     (217,)
+  3      340      strain     (214,)
+  3      341      strain     (203,)
+  3      342      strain     (203,)
+  3      343      strain     (203,)
+  3      344      strain     (209,)
+  3      345      strain     (266,)
+  3      346      strain     (252,)
+  3      347      strain     (249,)
+  3      348      strain     (222,)
+  3      349      strain     (222,)
+  3      350      random       None
+  3      351      random       None
+  3      352      random       None
+  3      353      random       None
+  3      354      random       None
+  3      355      random       None
+  3      356      random       None
+  3      357      random       None
+  3      358      random       None
+  3      359      random       None
+  3      252       elite      elite
+  3      203       elite      elite
+  3      266       elite      elite
+  3      209       elite      elite
+  3      222       elite      elite
+  3      249       elite      elite
+  3      214       elite      elite
+  3      204       elite      elite
+  3      134       elite      elite
+  3      201       elite      elite
+  4      360   crossover (203, 295)
+  4      361   crossover (346, 295)
+  4      362   crossover (214, 295)
+  4      363   crossover (295, 203)
+  4      364   crossover (345, 325)
+  4      365   crossover (295, 284)
+  4      366   crossover (295, 346)
+  4      367   crossover (289, 345)
+  4      368   crossover (311, 203)
+  4      369   crossover (295, 203)
+  4      370   crossover (346, 295)
+  4      371   crossover (346, 203)
+  4      372   crossover (289, 345)
+  4      373   crossover (346, 284)
+  4      374   crossover (311, 284)
+  4      375   crossover (289, 346)
+  4      376   crossover (214, 346)
+  4      377   crossover (332, 290)
+  4      378   crossover (284, 203)
+  4      379   crossover (308, 295)
+  4      380   crossover (345, 346)
+  4      381   crossover (284, 332)
+  4      382   crossover (295, 346)
+  4      383   crossover (203, 295)
+  4      384   crossover (332, 346)
+  4      385 permutation     (284,)
+  4      386 permutation     (346,)
+  4      387 permutation     (289,)
+  4      388 permutation     (203,)
+  4      389 permutation     (346,)
+  4      390 permutation     (295,)
+  4      391 permutation     (289,)
+  4      392 permutation     (346,)
+  4      393 permutation     (203,)
+  4      394 permutation     (332,)
+  4      395 permutation     (289,)
+  4      396 permutation     (295,)
+  4      397 permutation     (346,)
+  4      398 permutation     (311,)
+  4      399 permutation     (295,)
+  4      400 permutation     (282,)
+  4      401 permutation     (289,)
+  4      402 permutation     (346,)
+  4      403 permutation     (332,)
+  4      404 permutation     (290,)
+  4      405 permutation     (204,)
+  4      406 permutation     (345,)
+  4      407 permutation     (203,)
+  4      408 permutation     (203,)
+  4      409 permutation     (289,)
+  4      410      strain     (295,)
+  4      411      strain     (203,)
+  4      412      strain     (308,)
+  4      413      strain     (284,)
+  4      414      strain     (295,)
+  4      415      strain     (346,)
+  4      416      strain     (295,)
+  4      417      strain     (284,)
+  4      418      strain     (345,)
+  4      419      strain     (203,)
+  4      420      strain     (345,)
+  4      421      strain     (345,)
+  4      422      strain     (295,)
+  4      423      strain     (204,)
+  4      424      strain     (311,)
+  4      425      strain     (332,)
+  4      426      strain     (332,)
+  4      427      strain     (204,)
+  4      428      strain     (203,)
+  4      429      strain     (203,)
+  4      430      random       None
+  4      431      random       None
+  4      432      random       None
+  4      433      random       None
+  4      434      random       None
+  4      435      random       None
+  4      436      random       None
+  4      437      random       None
+  4      438      random       None
+  4      439      random       None
+  4      346       elite      elite
+  4      295       elite      elite
+  4      203       elite      elite
+  4      345       elite      elite
+  4      332       elite      elite
+  4      284       elite      elite
+  4      289       elite      elite
+  4      290       elite      elite
+  4      311       elite      elite
+  4      214       elite      elite
+  5      440   crossover (214, 398)
+  5      441   crossover (422, 390)
+  5      442   crossover (332, 361)
+  5      443   crossover (435, 361)
+  5      444   crossover (284, 422)
+  5      445   crossover (203, 390)
+  5      446   crossover (422, 435)
+  5      447   crossover (390, 203)
+  5      448   crossover (289, 290)
+  5      449   crossover (332, 203)
+  5      450   crossover (406, 422)
+  5      451   crossover (422, 390)
+  5      452   crossover (390, 422)
+  5      453   crossover (284, 290)
+  5      454   crossover (214, 390)
+  5      455   crossover (203, 332)
+  5      456   crossover (203, 390)
+  5      457   crossover (203, 398)
+  5      458   crossover (203, 214)
+  5      459   crossover (289, 390)
+  5      460   crossover (398, 390)
+  5      461   crossover (406, 361)
+  5      462   crossover (390, 203)
+  5      463   crossover (398, 203)
+  5      464   crossover (284, 390)
+  5      465 permutation     (422,)
+  5      466 permutation     (398,)
+  5      467 permutation     (284,)
+  5      468 permutation     (361,)
+  5      469 permutation     (284,)
+  5      470 permutation     (203,)
+  5      471 permutation     (422,)
+  5      472 permutation     (203,)
+  5      473 permutation     (390,)
+  5      474 permutation     (203,)
+  5      475 permutation     (390,)
+  5      476 permutation     (203,)
+  5      477 permutation     (422,)
+  5      478 permutation     (361,)
+  5      479 permutation     (203,)
+  5      480 permutation     (360,)
+  5      481 permutation     (422,)
+  5      482 permutation     (289,)
+  5      483 permutation     (203,)
+  5      484 permutation     (362,)
+  5      485 permutation     (284,)
+  5      486 permutation     (422,)
+  5      487 permutation     (332,)
+  5      488 permutation     (422,)
+  5      489 permutation     (390,)
+  5      490      strain     (390,)
+  5      491      strain     (284,)
+  5      492      strain     (284,)
+  5      493      strain     (390,)
+  5      494      strain     (398,)
+  5      495      strain     (398,)
+  5      496      strain     (390,)
+  5      497      strain     (398,)
+  5      498      strain     (398,)
+  5      499      strain     (214,)
+  5      500      strain     (375,)
+  5      501      strain     (364,)
+  5      502      strain     (390,)
+  5      503      strain     (203,)
+  5      504      strain     (214,)
+  5      505      strain     (332,)
+  5      506      strain     (360,)
+  5      507      strain     (361,)
+  5      508      strain     (203,)
+  5      509      strain     (375,)
+  5      510      random       None
+  5      511      random       None
+  5      512      random       None
+  5      513      random       None
+  5      514      random       None
+  5      515      random       None
+  5      516      random       None
+  5      517      random       None
+  5      518      random       None
+  5      519      random       None
+  5      390       elite      elite
+  5      422       elite      elite
+  5      203       elite      elite
+  5      398       elite      elite
+  5      332       elite      elite
+  5      361       elite      elite
+  5      284       elite      elite
+  5      289       elite      elite
+  5      290       elite      elite
+  5      406       elite      elite

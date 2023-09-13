@@ -1,0 +1,38 @@
+[basic]
+algo = EA
+calc_code = ASE
+tot_struc = 200
+nstage = 1
+njob = 10
+jobcmd = bash
+jobfile = job_cryspy
+
+[structure]
+natot = 8
+atype = Ca Si
+nat =  4 4
+mindist_1 = 2.5 2.0
+mindist_2 = 2.0 2.0
+
+[ASE]
+ase_python = ase_in.py
+
+[EA]
+n_pop = 80
+n_crsov = 25
+n_perm = 25
+n_strain = 20
+n_rand = 10
+n_elite = 10
+n_fittest = 30
+fit_reverse = False
+slct_func = TNM
+t_size = 5
+sigma_st = 0.10
+crs_lat = equal
+nat_diff_tole = 2
+ntimes = 1
+maxcnt_ea = 50
+maxgen_ea = 5
+
+[option]
