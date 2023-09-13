@@ -364,7 +364,7 @@ def plot_convex_full(base_dir, cryspy_ene_lst, comp_list,
 if __name__ == "__main__":
     elem1 = "Sr"
     elem2 = "P"
-    MP_API_KEY = "p1dp7truuF2rZctUmPjssnFIuS99N5RI"
+    MP_API_KEY = "YOUR-API-KEY"
     
     binary, ele1, ele2 = query(elem1, elem2)
     base_energy_pymatgen_e1, base_energy_matlantis_e1 = get_base_energy(ele1)
