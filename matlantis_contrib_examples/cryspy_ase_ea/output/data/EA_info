@@ -1,6 +1,0 @@
-Gen Population Crossover Permutation Strain Random Elite crs_lat slct_func
-  1        200         0           0      0    200     0   equal       TNM
-  2         80        25          25     20     10    10   equal       TNM
-  3         80        25          25     20     10    10   equal       TNM
-  4         80        25          25     20     10    10   equal       TNM
-  5         80        25          25     20     10    10   equal       TNM
