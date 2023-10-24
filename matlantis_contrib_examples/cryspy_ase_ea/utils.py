@@ -129,10 +129,11 @@ import numpy as np
 from ase.io import read, write
 from ase.spacegroup.symmetrize import FixSymmetry
 
-from matlantis_features.features.common.opt import LBFGSASEOptFeature
+from pfp_api_client.pfp.calculators.ase_calculator import ASECalculator
+from pfp_api_client.pfp.estimator import EstimatorCalcMode
 
-os.environ["MATLANTIS_PFP_MODEL_VERSION"] = "v4.0.0"
-os.environ["MATLANTIS_PFP_CALC_MODE"] = "crystal_u0"
+from matlantis_features.features.common.opt import LBFGSASEOptFeature
+from matlantis_features.utils.calculators import pfp_estimator_fn
 
 # ---------- input structure
 # CrySPY outputs 'POSCAR' as an input file in work/xxxxxx directory
@@ -166,8 +167,13 @@ def filter_structure(atoms_cell):
         return False
 
 if filter_structure(atoms.cell):
-    # atoms.set_constraint([FixSymmetry(atoms)])
-    opt = LBFGSASEOptFeature(filter=True)
+    atoms.set_constraint([FixSymmetry(atoms)])
+    opt = LBFGSASEOptFeature(n_run=10000,
+                             filter=True,
+                             estimator_fn=pfp_estimator_fn(
+                                 calc_mode=EstimatorCalcMode.CRYSTAL_U0,
+                             ),
+                            )
     result_opt = opt(atoms)
     e = result_opt.atoms.ase_atoms.get_total_energy()
     with open('log.tote', mode='w') as f:
