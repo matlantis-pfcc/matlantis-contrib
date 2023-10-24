@@ -18,18 +18,9 @@ from pfp_api_client.pfp.estimator import Estimator, EstimatorCalcMode
 
 from matlantis_features.features.common.opt import LBFGSASEOptFeature
 
-os.environ["MATLANTIS_PFP_MODEL_VERSION"] = "v4.0.0"
-os.environ["MATLANTIS_PFP_CALC_MODE"] = "crystal_u0"
-
-estimator = Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0)
-calculator = ASECalculator(estimator)
-shift_energies = estimator.get_shift_energy_table()
-
 def query(element:str):
     MP_API_KEY = os.environ["MP_API_KEY"]
     with MPRester(MP_API_KEY) as mpr:
-        # list_of_available_fields = mpr.summary.available_fields
-        # binary = mpr.summary.search(chemsys=elem1 + "-" + elem2,
         binary = mpr.summary.search(chemsys=element,
                                   fields=["material_id",
                                           "elements", 
@@ -54,14 +45,18 @@ def create_binary(elem1, elem2, composition):
     return binary_lst
 
 def get_base_energy(ele: list):
-    "Calculate energy for single element of Material Project and Matlantis"
+    """Calculate energy for single element of Material Project and Matlantis"""
+    
+    calculator = ASECalculator(Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0))
+    shift_energies = estimator.get_shift_energy_table()
+    
     for i in ele:
         if i.energy_above_hull == 0.0:
             base_energy_pymatgen = i.energy_per_atom
             atoms = AseAtomsAdaptor.get_atoms(i.structure)
             total_shift_energy = sum([shift_energies[i] for i in atoms.get_atomic_numbers()])
             atoms.set_constraint([FixSymmetry(atoms)])
-            opt = FireLBFGSASEOptFeature(filter=ExpCellASEFilter())
+            opt = LBFGSASEOptFeature(filter=True)
             result_opt = opt(atoms)
             total_energy = result_opt.atoms.ase_atoms.get_total_energy()
             base_energy_matlantis = (total_energy + total_shift_energy) / len(atoms)
@@ -295,18 +290,14 @@ def check_natom(cryspy_in_path, nat1, nat2):
         raise ValueError(f"natom in cryspy {nat} does not match material project {nat1}, {nat2}")
         
 def get_matlantis_energy(structure):
-
+    calculator = ASECalculator(Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0))
+    shift_energies = estimator.get_shift_energy_table()
+    
     atoms = AseAtomsAdaptor.get_atoms(structure)
     total_shift_energy = sum([shift_energies[i] for i in atoms.get_atomic_numbers()])
     
     atoms.calc = calculator
     total_energy = atoms.get_total_energy()
-    
-    # atoms.set_constraint([FixSymmetry(atoms)])
-    # filter=ExpCellASEFilter()
-    # opt = FireLBFGSASEOptFeature(filter=filter)
-    # result_opt = opt(atoms)
-    # total_energy = result_opt.atoms.ase_atoms.get_total_energy()
     
     return total_energy / len(atoms), total_shift_energy / len(atoms)
 
@@ -360,17 +351,3 @@ def plot_convex_full(base_dir, cryspy_ene_lst, comp_list,
     plt.legend()
     plt.grid(alpha = 0.5)
     plt.savefig(base_dir + "/convex_full.png")
-    
-if __name__ == "__main__":
-    elem1 = "Sr"
-    elem2 = "P"
-    MP_API_KEY = "YOUR-API-KEY"
-    
-    binary, ele1, ele2 = query(elem1, elem2)
-    base_energy_pymatgen_e1, base_energy_matlantis_e1 = get_base_energy(ele1)
-    base_energy_pymatgen_e2, base_energy_matlantis_e2 = get_base_energy(ele2)
-
-    print(f"enegy per atom for single element(pymatgen):{base_energy_pymatgen_e1:.4f}")
-    print(f"enegy per atom for single element(matlantis):{base_energy_matlantis_e1:.4f}")
-    print(f"enegy per atom for single element(pymatgen):{base_energy_pymatgen_e2:.4f}")
-    print(f"enegy per atom for single element(matlantis):{base_energy_matlantis_e2:.4f}")
