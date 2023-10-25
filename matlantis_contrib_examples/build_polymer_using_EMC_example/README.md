@@ -8,7 +8,7 @@ Enhanced Monte Carlo\
 https://montecarlo.sourceforge.net/emc/Welcome.html
 
 EMC Download\
-https://sourceforge.net/projects/montecarlo/files/emc_linux_fc31_v9.4.4_20220801.tgz/download
+https://sourceforge.net/projects/montecarlo/files/emc_linux_x86_64_v9.4.4_20230801.tgz/download
 
 EMC UserForum\
 https://matsci.org/c/emc/
