@@ -3,7 +3,7 @@ from pfp_api_client.pfp.calculators.ase_calculator import ASECalculator
 from pfcc_extras.visualize.ngl_utils import (add_force_shape, get_struct,
                                              save_image, update_tooltip_atoms, _get_standard_pos, add_axes_shape)
 
-import ase, os, sys, glob, traceback, datetime, pytz
+import ase, os, sys, glob, traceback, datetime, pytz,re
 from io import StringIO
 import pandas as pd
 import numpy as np
@@ -15,58 +15,35 @@ from ase.io import Trajectory
 from ase.optimize import LBFGS
 from ase.visualize.ngl import NGLDisplay
 from ase.io.proteindatabank import write_proteindatabank
-
 from ipywidgets import (widgets, Output, Layout, Text, Button, HBox, VBox, IntSlider, Label, Textarea, Select, Checkbox,
                         Box, FloatSlider)
 from ipywidgets.widgets import DOMWidget
 from IPython.display import HTML
-
 import nglview as nv
 from nglview import NGLWidget
-
-from typing import Any, Dict, List, Optional, Union
-from traitlets import Bunch
-
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib
-import seaborn as sns
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-
-estimator = Estimator(model_version="v3.0.0", calc_mode=EstimatorCalcMode.CRYSTAL)
-calculator = ASECalculator(estimator)
-
-df = pd.DataFrame(
-    columns={"SMILES": "str", "formula": "object", "atoms": "object", "energy": "float", "maxforce": "float",
-             "opt": 'bool'})
 pd.options.display.max_colwidth = 30
 
-
 class JSMEBox:
-    def __init__(self, jsme_folderpath=None):
-        """JSMEBox can create SMILES from JSME drawings  .
-        Parameters:
-            jsme_folderpath: str  The (higher level) path where jsme.nocache.js is stored.
-        """
+    def __init__(self):
         jsme_url = os.environ['MATLANTIS_NOTEBOOK_URL'] + "files"  # for own matlantis url
-        if jsme_folderpath is None:
-            jsme_folderpath = os.path.dirname(__file__)
-        jsme_filepath = jsme_folderpath + "/jsme-editor.github.io/dist/jsme/jsme.nocache.js"
+        jsme_folderpath = os.path.dirname(os.path.abspath(__file__))
+        # __file__ はこのスクリプト自体のパス（aa.pyのパス） '' で囲わないことが重要！！！
+        jsme_filepath = os.path.join(jsme_folderpath, 'data', 'jsme', 'jsme.nocache.js')
         if not os.path.exists(jsme_filepath):
-            # Search "jsme.nocache.js" under `jsme_folderpath` directory.
-            jsme_filepath_list = glob.glob(jsme_folderpath + "/**/jsme.nocache.js", recursive=True)
-            print("jsme_filepath_list = ", jsme_filepath_list)
-            if len(jsme_filepath_list) == 0:
-                raise FileNotFoundError("jsme.nocache.js not found, please prepare JSME software.")
-            jsme_filepath = jsme_filepath_list[0]
-        # print("jsme_filepath = ", jsme_filepath)
+            print(jsme_filepath)
+            raise FileNotFoundError("jsme.nocache.js not found, please prepare JSME software.")
         jsme_url += jsme_filepath.replace("home/jovyan", "")
+        jsme_url = re.sub(r'(?<!:)//+', '/', jsme_url) #2023/10/23 いままで上でも動いていたので互換性を持たせるためここで修正
         self.jsme_url = jsme_url
         jsme_matlantis_template_htm = """
         <html><head>
         <script type="text/javascript" language="javascript" src="own_jsme_url"></script>
         <script>    
-        function jsmeOnLoad() {  jsmeApplet = new JSApplet.JSME("myid", "430px","285px");           
+        function jsmeOnLoad() {  jsmeApplet = new JSApplet.JSME("myid", "380px","285px");           
         jsmeApplet.setCallBack("AfterStructureModified", show_smiles);        }        
         function show_smiles(event) {
          smiles = event.src.smiles();            
@@ -91,17 +68,25 @@ class JSMEBox:
         def __repr__(self) -> str:
             return str(display(self.view))
 
-
 class Moldraw:
     """draw and get ase atoms by JSME"""
 
-    def __init__(self, df=df, estimator=estimator):
+    def __init__(self, df=None, calculator=None):
         """Moldraw can create Ase Atoms objects and Pandas Dataframes from JSME drawings or SMILES.
                 Parameters:
                  df: Pandas dataFrame object with atoms column containing Ase Atoms object.
-                 estimator : pfp_api_client.pfp.estimator.Estimator
+                 calculator : pfp_api_client.pfp.calculators.ase_calculator.ASECalculator
         """
+        if df is None:
+            df = pd.DataFrame(
+            columns={"SMILES": "str", "formula": "object", "atoms": "object", "energy": "float", "maxforce": "float","opt": 'bool'})
+            df["opt"] = df["opt"].astype(bool)
+        if calculator is None:
+            estimator = Estimator()
+            calculator = ASECalculator(estimator)
+
         self.df = df
+        self.calculator = calculator
         self.jsme = JSMEBox()
         self.jsme.smilesbox.observe(self.smiles_change, names='value')
 
@@ -147,7 +132,7 @@ class Moldraw:
         if len(smiles) > 0:
             atoms = self.atoms
             if atoms.calc is None:
-                atoms.calc = calculator
+                atoms.calc = self.calculator
             if self.check_opt.value:
                 opt = LBFGS(atoms, maxstep=0.1, logfile=None)
                 opt.run(fmax=self.fmax)
@@ -156,9 +141,16 @@ class Moldraw:
             e = atoms.get_potential_energy()
             maxforce = np.sqrt(((atoms.get_forces()) ** 2).sum(axis=1).max())
             formula = atoms.get_chemical_formula()
-            series = pd.Series([smiles, formula, atoms.copy(), e, maxforce, self.check_opt.value],
-                               index=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
-            self.df = self.df.append(series, ignore_index=True)
+            # series = pd.Series([smiles, formula, atoms.copy(), e, maxforce, self.check_opt.value],
+            #                    index=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
+            #self.df = self.df.append(series, ignore_index=True)  ## 2023/10/25　修正        
+            # seriesの代わりに直接DataFrameを作成
+            df_row = pd.DataFrame([[smiles, formula, atoms.copy(), e, maxforce,self.check_opt.value]],
+                          columns=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
+            # "opt"列をbool型にキャスト
+            df_row["opt"] = df_row["opt"].astype(bool)
+            # concatを使用してDataFrameに追加
+            self.df =  pd.concat([self.df , df_row], ignore_index=True)
             self.dfview.df = self.df
             self.dfview.row_revSlider.value = - (max(0, len(self.df) - 5))
             self.dfview.showdf({"name": "value"})
@@ -168,7 +160,8 @@ class Moldraw:
         if len(self.jsme.smilesbox.value) > 0:
             with self.dfview.dfoutput:
                 conformersdf = get_conformersdf(self.jsme.smilesbox.value, fmax=self.fmax, opt=self.check_opt.value)
-            self.df = self.df.append(conformersdf, ignore_index=True)
+            #self.df = self.df.append(conformersdf, ignore_index=True) ## 2023/10/25　修正
+            self.df = pd.concat([self.df, conformersdf], ignore_index=True)
             self.atomslist += list(self.df["atoms"].values)
             self.dfview.df = self.df
             self.dfview.row_revSlider.value = - (max(0, len(self.df)))
@@ -196,12 +189,16 @@ def smiles_to_ase(smiles):
     return ase.Atoms(ele, posa)
 
 
-def get_conformersdf(smiles, fmax=0.05, top=5, rmsd_threshold=0.2, opt=True, n_confs=100):
+def get_conformersdf(smiles, fmax=0.05, top=5, rmsd_threshold=0.2, opt=True, n_confs=100 ,calculator=None):
     conformerdf = pd.DataFrame()
     ade_mol = autode.Molecule(smiles=smiles)
     autode.config.Config.rmsd_threshold = rmsd_threshold + (ade_mol.n_atoms - 15) / 100  # 時間短縮のため原子数に応じ閾値増加
     ade_mol.populate_conformers(n_confs=n_confs)
     n = len(ade_mol.conformers)
+    if calculator is None:
+        estimator = Estimator()
+        calculator = ASECalculator(estimator)
+     
     print(
         f"{n} conformers found (n_confs:{n_confs} n_atoms:{ade_mol.n_atoms},rmsd_threshold:{autode.config.Config.rmsd_threshold})")
 
@@ -214,10 +211,18 @@ def get_conformersdf(smiles, fmax=0.05, top=5, rmsd_threshold=0.2, opt=True, n_c
         e = atoms.get_potential_energy()
         maxforce = np.sqrt(((atoms.get_forces()) ** 2).sum(axis=1).max())
         formula = atoms.get_chemical_formula()
-        series = pd.Series([smiles, formula, atoms.copy(), e, maxforce, False],
-                           index=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
-        conformerdf = conformerdf.append(series, ignore_index=True)
-        conformerdf = conformerdf.astype({"opt": bool})
+        # series = pd.Series([smiles, formula, atoms.copy(), e, maxforce, False],
+        #                    index=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
+        #conformerdf = conformerdf.append(series, ignore_index=True)
+        
+        # seriesの代わりに直接DataFrameを作成
+        df_row = pd.DataFrame([[smiles, formula, atoms.copy(), e, maxforce, False]],
+                      columns=["SMILES", "formula", "atoms", "energy", "maxforce", "opt"])
+        # "opt"列をbool型にキャスト
+        df_row["opt"] = df_row["opt"].astype(bool)
+        # concatを使用してDataFrameに追加
+        conformerdf = pd.concat([conformerdf, df_row], ignore_index=True)
+
     conformerdf = conformerdf.sort_values("energy")
     conformerdf = conformerdf.reset_index(drop=True)
     conformerdf["conf_no"] = conformerdf.index
@@ -241,13 +246,11 @@ def get_conformersdf(smiles, fmax=0.05, top=5, rmsd_threshold=0.2, opt=True, n_c
         conformerdf["conf_no_opt"] = conformerdf.index
     return conformerdf
 
-
 class Dfplot:
-    def __init__(self, df=df, w=550, h=450):
+    def __init__(self, df, w=550, h=450):
         self.df = df
         self.w = w
         self.h = h
-
         plotnumbercolcands = list(df.select_dtypes(include='number').columns.values)
         plotcolcands = list(df.columns.values)
         self.plotoutput = widgets.Output(
@@ -353,16 +356,14 @@ class Dfview():
                         self.column_Slider.value: min(self.df.shape[1], self.column_Slider.value + 7)
                         ])
 
-
 class Nglbox():
     """
     """
-
-    def __init__(self, atoms=None, w=400, h=340):
+    def __init__(self, atoms=None, w=400, h=340,calculator = None):
         view = nv.NGLWidget(width=str(w) + "px", height=str(h) + "px")
         self.view = view
         self.check_index = Checkbox(description='index', indent=False, layout={'width': '80px'})
-        self.check_axes = Checkbox(description='axes', indent=False, layout={'width': '80px'})
+        self.check_axes = Checkbox(description='axes', indent=False, layout={'width'  : '80px'})
         self.check_force = Checkbox(description='force', indent=False, layout={'width': '80px'})
         self.check_chage = Checkbox(description='chage', indent=False, layout={'width': '80px'})
         self.check_index.observe(self.update_deco, names="value")
@@ -376,6 +377,11 @@ class Nglbox():
                                 ], layout=Layout(width='250px', height='38px'))
         self.viewwithcheck = VBox([self.view, self.checkboxes])
         self.update_structre(atoms)
+        if calculator is None:
+            estimator = Estimator()
+            calculator = ASECalculator(estimator)
+        self.calculator = calculator
+
 
     def update_deco(self, change):
         if self.atoms is None: return
@@ -406,7 +412,7 @@ class Nglbox():
     def show_force(self):
         force_scale: float = 3
         if self.atoms.calc is None:
-            self.atoms.calc = calculator
+            self.atoms.calc = self.calculator
         c = add_force_shape(self.atoms, self.view, force_scale, [1, 0, 0])
 
     def show_axes_shape(self):
@@ -415,7 +421,7 @@ class Nglbox():
     def show_charge_label(self, threshold: float = 0.05, radius: float = 1.2):
         atoms = self.atoms
         if atoms.calc is None:
-            atoms.calc = calculator
+            atoms.calc = self.calculator
         self.view.remove_label()
         charge = np.round(atoms.get_charges(), 1)
         self.view.add_label(
