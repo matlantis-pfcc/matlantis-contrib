@@ -907,7 +907,7 @@ class Indices_setter:
         self.fs = FloatSlider(
             min=0, max=100, value=5, layout={"width": "170px"}, readout_format=".1f"
         )
-        setconects = Button(description="conects", layout={"width": "90px"})
+        setconects = Button(description="Connect", layout={"width": "90px"})
         setconects.on_click(self.set_connected_atoms_text)
         self.conectfrom = IntText(
             value=0,
