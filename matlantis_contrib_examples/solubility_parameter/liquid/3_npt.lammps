@@ -1,0 +1,28 @@
+units metal
+boundary p p p
+atom_style atomic
+box tilt large
+
+pair_style pfp_api v5.0.0 CRYSTAL_PLUS_D3
+
+read_data lmp_nvt_final_mod.data
+
+pair_coeff * * species
+
+timestep 0.001
+
+thermo 500
+thermo_style custom step temp pe ke density
+
+dump            1 all custom 500 lmp.dump id type xs ys zs ix iy iz
+dump_modify     1 sort id
+dump            2 all xtc 500 lmp.xtc
+
+variable        pene equal pe
+variable        dens equal density
+fix             1 all ave/time 1 100 100 v_pene v_dens file energy_npt.txt
+
+fix             2 all npt temp 300. 300. $(100.0*dt) tchain 3 iso 1.01325 1.01325 $(1000.0*dt) pchain 3
+fix             3 all momentum 50 linear 1 1 1 
+run             100000 upto
+write_data      lmp_npt_final.data
