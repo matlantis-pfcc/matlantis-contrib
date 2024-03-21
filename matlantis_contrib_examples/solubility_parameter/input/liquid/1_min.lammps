@@ -1,0 +1,16 @@
+units metal
+boundary p p p
+atom_style atomic
+box tilt large
+
+pair_style pfp_api v5.0.0 CRYSTAL_PLUS_D3
+
+read_data 
+
+pair_coeff * * species
+
+thermo 100
+thermo_style custom step temp pe ke density
+
+minimize        1e-4 1e-6 10000 1000000
+write_data      lmp_min_final.data
