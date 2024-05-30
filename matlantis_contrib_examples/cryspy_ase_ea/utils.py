@@ -15,6 +15,7 @@ from pymatgen.ext.matproj import MPRester
 
 from pfp_api_client.pfp.calculators.ase_calculator import ASECalculator
 from pfp_api_client.pfp.estimator import Estimator, EstimatorCalcMode
+from matlantis_features.utils.calculators import pfp_estimator_fn
 
 from matlantis_features.features.common.opt import LBFGSASEOptFeature
 
@@ -22,7 +23,7 @@ def query(element:str):
     MP_API_KEY = os.environ["MP_API_KEY"]
     with MPRester(MP_API_KEY) as mpr:
         binary = mpr.summary.search(chemsys=element,
-                                  fields=["material_id",
+                                  _fields=["material_id",
                                           "elements", 
                                           "nsites",
                                           "composition",
@@ -47,16 +48,20 @@ def create_binary(elem1, elem2, composition):
 def get_base_energy(ele: list):
     """Calculate energy for single element of Material Project and Matlantis"""
     
-    calculator = ASECalculator(Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0))
-    shift_energies = estimator.get_shift_energy_table()
+    # calculator = ASECalculator(est)
+    est = Estimator(calc_mode="CRYSTAL_U0", model_version="v6.0.0")
+    shift_energies = est.get_shift_energy_table()
     
     for i in ele:
-        if i.energy_above_hull == 0.0:
-            base_energy_pymatgen = i.energy_per_atom
-            atoms = AseAtomsAdaptor.get_atoms(i.structure)
+        if i["energy_above_hull"] == 0.0:
+            base_energy_pymatgen = i["energy_per_atom"]
+            atoms = AseAtomsAdaptor.get_atoms(i["structure"])
             total_shift_energy = sum([shift_energies[i] for i in atoms.get_atomic_numbers()])
             atoms.set_constraint([FixSymmetry(atoms)])
-            opt = LBFGSASEOptFeature(filter=True)
+            opt = LBFGSASEOptFeature(filter=True, estimator_fn = pfp_estimator_fn(
+                                     model_version="v6.0.0",
+                                     calc_mode="CRYSTAL_U0")
+                                    )
             result_opt = opt(atoms)
             total_energy = result_opt.atoms.ase_atoms.get_total_energy()
             base_energy_matlantis = (total_energy + total_shift_energy) / len(atoms)
@@ -66,7 +71,7 @@ def get_base_energy(ele: list):
 def make_cryspy_input(n, save_dir_path, target, mindist_elem1_elem1,
                       mindist_elem1_elem2, mindist_elem2_elem2, 
                       tot_struc, njob, n_crsov, n_perm, n_strain,
-                      n_rand, n_elite, n_fittest, t_zie, maxgen_ea):
+                      n_rand, n_elite, n_fittest, t_size, maxgen_ea):
     e1, e2 = target.composition.items()
     natot = target.nsites
     os.makedirs(save_dir_path, exist_ok = True)
@@ -166,26 +171,27 @@ def filter_structure(atoms_cell):
     else:
         return False
 
-if filter_structure(atoms.cell):
-    atoms.set_constraint([FixSymmetry(atoms)])
-    opt = LBFGSASEOptFeature(n_run=10000,
-                             filter=True,
-                             estimator_fn=pfp_estimator_fn(
-                                 calc_mode=EstimatorCalcMode.CRYSTAL_U0,
-                             ),
-                            )
-    result_opt = opt(atoms)
-    e = result_opt.atoms.ase_atoms.get_total_energy()
-    with open('log.tote', mode='w') as f:
-        f.write(str(e))
+# if filter_structure(atoms.cell):
+atoms.set_constraint([FixSymmetry(atoms)])
+opt = LBFGSASEOptFeature(n_run=5000,
+                         filter=True,
+                         estimator_fn=pfp_estimator_fn(
+                             calc_mode=EstimatorCalcMode.CRYSTAL_U0,
+                             model_version="v6.0.0"
+                         ),
+                        )
+result_opt = opt(atoms)
+e = result_opt.atoms.ase_atoms.get_total_energy()
+with open('log.tote', mode='w') as f:
+    f.write(str(e))
 
-    write('CONTCAR', result_opt.atoms.ase_atoms, format='vasp')
+write('CONTCAR', result_opt.atoms.ase_atoms, format='vasp')
 
-else:
-    with open('log.tote', mode='w') as f:
-        f.write(str(0.00))
+# else:
+    # with open('log.tote', mode='w') as f:
+        # f.write(str(0.00))
 
-    write('CONTCAR', atoms, format='vasp')
+    # write('CONTCAR', atoms, format='vasp')
 
     """
     
@@ -272,17 +278,18 @@ def envelope(cryspy_energy:list, composition:list):
             
     return env_x, env_y
 
-def get_material_data(material_id_path, binary):
-    if os.path.exists(material_id_path):
-        with open(material_id_path) as f:
-            material_id = f.read()
+# def get_material_data(material_id_path, binary):
+#     if os.path.exists(material_id_path):
+#         with open(material_id_path) as f:
+#             material_id = f.read()
             
-    idx = [str(i.material_id) for i in binary]
-    mp_data = binary[idx.index(material_id)]
+#     idx = [str(i["material_id"]) for i in binary]
+#     # mp_data = binary[idx.index(material_id)]
+#     mp_data
             
-    return mp_data
+#     return mp_data
 
-def check_natom(cryspy_in_path, nat1, nat2):
+def read_natom(cryspy_in_path):
     if os.path.exists(cryspy_in_path):
         with open(cryspy_in_path) as f:
             for line in f.read().splitlines():
@@ -292,20 +299,16 @@ def check_natom(cryspy_in_path, nat1, nat2):
     else:
         assert f"{cryspy_in_path} doesn't exist."
     
-    if nat1 != int(nat.split()[0]) and nat2 != int(nat.split()[1]):
-        raise ValueError(f"natom in cryspy {nat} does not match material project {nat1}, {nat2}")
-        
-def get_matlantis_energy(structure):
-    calculator = ASECalculator(Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0))
-    shift_energies = estimator.get_shift_energy_table()
+    return int(nat.split()[0]), int(nat.split()[1])
+
+def get_shift_energy(elem1, elem2, n_ele1, n_ele2):
+    from ase.data import atomic_numbers
+    est = Estimator(calc_mode=EstimatorCalcMode.CRYSTAL_U0, model_version="v6.0.0")
+    shift_energies = est.get_shift_energy_table()
     
-    atoms = AseAtomsAdaptor.get_atoms(structure)
-    total_shift_energy = sum([shift_energies[i] for i in atoms.get_atomic_numbers()])
+    total_shift_energy = sum([shift_energies[atomic_numbers[i]] * j for i, j in zip([elem1, elem2], [n_ele1, n_ele2])])
     
-    atoms.calc = calculator
-    total_energy = atoms.get_total_energy()
-    
-    return total_energy / len(atoms), total_shift_energy / len(atoms)
+    return total_shift_energy / (n_ele1 + n_ele2)
 
 def get_cryspy_data(energy_path, total_shift_energy, base_energy_matlantis):
     if os.path.exists(energy_path):
@@ -324,8 +327,8 @@ def get_cryspy_data(energy_path, total_shift_energy, base_energy_matlantis):
         
         return [0]
 
-def plot_convex_full(base_dir, cryspy_ene_lst, comp_list,
-                     show_known_materials=True, matlantis_energy=[], materials_project_energy=[]):
+def plot_convex_full(base_dir, cryspy_ene_lst, comp_list, comp_list_,
+                     materials_project_energy=[], show_known_materials=True):
     # Create the plot
     plt.figure(figsize=(10, 6))
 
@@ -343,17 +346,20 @@ def plot_convex_full(base_dir, cryspy_ene_lst, comp_list,
     plt.scatter([0, 1], [0, 0])
     
     if show_known_materials:
-        plt.scatter(comp_list, materials_project_energy, c = "red", label = "Known structures(Materials Project)")
-        plt.scatter(comp_list, matlantis_energy, c = "blue", label = "Known structures(Matlantis)")
+        plt.scatter(comp_list_, materials_project_energy, c = "red", label = "Known structures(Materials Project)")
+        # plt.scatter(comp_list, matlantis_energy, c = "blue", label = "Known structures(Matlantis)")
     
     cryspy_ene_lst_flat = list(itertools.chain.from_iterable(cryspy_ene_lst))
-    combined_list = cryspy_ene_lst_flat + materials_project_energy + matlantis_energy
+    combined_list = cryspy_ene_lst_flat + materials_project_energy
     min_value = min(combined_list)
     
     plt.xlim([-.1, 1.1])
-    plt.ylim([min_value - 0.5, 0.5])
+    plt.ylim([min_value - 0.25, 0.5])
     plt.xlabel('Composition (fraction elem2)', fontsize = 15)
     plt.ylabel('formation energy (eV/atom)', fontsize = 15)
     plt.legend()
     plt.grid(alpha = 0.5)
     plt.savefig(base_dir + "/convex_full.png")
+    
+if __name__ == "__main__":
+    e_test = query("Ca-Si")
