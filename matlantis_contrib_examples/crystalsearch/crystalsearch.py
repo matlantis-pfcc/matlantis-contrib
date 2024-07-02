@@ -238,7 +238,8 @@ def select_hull(df, above_under = 0.05 ):
     return df[df["e_above_hull"] <= above_under ].reset_index(drop=True)
 
 def prim_to_conv(primitiveatoms):
-    lattice, scaled_positions, numbers = spglib.standardize_cell(primitiveatoms)
+    cell = (primitiveatoms.cell, primitiveatoms.get_scaled_positions(), primitiveatoms.numbers)
+    lattice, scaled_positions, numbers = spglib.standardize_cell(cell)
     conventionalatoms = ase.Atoms(numbers = numbers , cell = lattice , scaled_positions = scaled_positions ,pbc = True)
     return conventionalatoms
 def get_conventional(df):
