@@ -25,9 +25,10 @@ from ase.md import MDLogger
 from ase.md.nvtberendsen import NVTBerendsen
 from ase.md.velocitydistribution import (MaxwellBoltzmannDistribution,
                                          Stationary)
-from ase.neb import DyNEB
+from ase.mep import NEB
 from ase.optimize import FIRE, LBFGS
-from ase.spacegroup.symmetrize import FixSymmetry
+from ase.constraints import FixSymmetry
+
 from ase.thermochemistry import HarmonicThermo, IdealGasThermo
 from ase.vibrations import Vibrations
 from ase.vibrations.data import VibrationsData
@@ -1707,7 +1708,7 @@ class Neb_maker:
 
 def get_interpolate_image(start, end, nimages=15):
     configs = [start.copy() for i in range(nimages - 1)] + [end.copy()]
-    neb = DyNEB(configs)
+    neb = NEB(configs)
     neb.interpolate(mic=True)
     return configs
 
@@ -1723,12 +1724,12 @@ def neb_calc(
         )
         atoms.get_forces()
     if climb:
-        neb = DyNEB(
+        neb = NEB(
             configs, k=k, fmax=fmax, climb=True, dynamic_relaxation=True, scale_fmax=0.2
         )  # Climbing image
         relax = FIRE(neb, trajectory=None)
     else:
-        neb = DyNEB(
+        neb = NEB(
             configs, k=k, fmax=fmax, climb=True, dynamic_relaxation=True, scale_fmax=0.2
         )  # Climbing image
         relax = LBFGS(neb, trajectory=None)
@@ -1751,7 +1752,8 @@ def neb_plot(neblogfile, headrows=5, maxrows=9, h=260, w=360):
     df = pd.read_csv(
         neblogfile,
         header=None,
-        delim_whitespace=True,
+        #delim_whitespace=True,
+        sep='\s+'
     )
     df.set_index(0, inplace=True)
     df.index.name = None
@@ -2467,10 +2469,10 @@ class Opter:
 
 def opt_plot(logfile, h=220, w=360):
     df = pd.read_csv(
-        logfile, delim_whitespace=True, skiprows=2, header=None, usecols=[1, 3, 4]
+        logfile, sep='\s+', skiprows=2, header=None, usecols=[1, 3, 4]
     )
     df.columns = ["Step", "energy", "fmax"]
-    df["energy"] = df["energy"].str.replace("*", "", regex=False).astype(float)
+    #df["energy"] = df["energy"].str.replace("*", "", regex=False).astype(float)
     fig = make_subplots(
         rows=2,
         cols=1,
@@ -3214,7 +3216,7 @@ class Matviewer:
             value=h0,
             step=50,
         )
-        self.color_picker = ColorPicker(value="#3399AA", description="APP back")
+        self.color_picker = ColorPicker(value="#E17D4B", description="APP back")
         self.color_picker.observe(self.display_set_button_click)
         set_button = Button(description="SET", layout={"width": "60px"})
         set_button.on_click(self.display_set_button_click)
