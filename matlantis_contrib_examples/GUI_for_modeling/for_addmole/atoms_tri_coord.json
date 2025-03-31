@@ -1,0 +1,13 @@
+{"1": {
+ "calculator": "asecalculator",
+ "calculator_parameters": {},
+ "cell": {"__ndarray__": [[3, 3], "float64", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]},
+ "ctime": 24.17595483561579,
+ "mtime": 24.17595483561579,
+ "numbers": {"__ndarray__": [[4], "int64", [7, 1, 1, 1]]},
+ "pbc": {"__ndarray__": [[3], "bool", [false, false, false]]},
+ "positions": {"__ndarray__": [[4, 3], "float64", [0.0193, -0.0033, 0.2459, 0.9949, -0.1622, -0.0862, -0.6477, -0.7385, -0.0799, -0.3665, 0.9039, -0.0798]]},
+ "unique_id": "9d4e5e2b3ca32f9f1ad4689b2ac82588",
+ "user": null},
+"ids": [1],
+"nextid": 2}
