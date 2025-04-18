@@ -1,0 +1,17 @@
+{"1": {
+ "calculator": "asecalculator",
+ "calculator_parameters": {},
+ "cell": {"__ndarray__": [[3, 3], "float64", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]},
+ "charges": {"__ndarray__": [[2], "float64", [4.0833860737166106e-08, -4.0833860737166106e-08]]},
+ "ctime": 24.178399715702312,
+ "energy": -3.2455716973474984,
+ "forces": {"__ndarray__": [[2, 3], "float64", [-4.857450008392334, -0.0, -0.0, 4.857450008392334, -0.0, -0.0]]},
+ "free_energy": -3.2455716973474984,
+ "mtime": 24.178399715702312,
+ "numbers": {"__ndarray__": [[2], "int64", [1, 1]]},
+ "pbc": {"__ndarray__": [[3], "bool", [false, false, false]]},
+ "positions": {"__ndarray__": [[2, 3], "float64", [0.7117262422821816, 0.0, 0.0, -0.41172624228218196, 0.0, 0.0]]},
+ "unique_id": "dcbc90383f0070eac2accb402783ecd5",
+ "user": null},
+"ids": [1],
+"nextid": 2}
